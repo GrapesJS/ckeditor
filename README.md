@@ -1,6 +1,6 @@
-# GrapesJS CkEditor
+# GrapesJS CKEditor
 
-This plugin replaces the default Rich Text Editor with the one from CkEditor
+This plugin replaces the default Rich Text Editor with the one from CKEditor
 
 <p align="center"><img src="http://grapesjs.com/img/screen-ckeditor.jpg" alt="GrapesJS" align="center"/></p>
 <br/>
@@ -12,7 +12,7 @@ This plugin replaces the default Rich Text Editor with the one from CkEditor
 * Plugin
   * Name: `gjs-plugin-ckeditor`
   * Options:
-      * `options` CkEditor's configuration object, eg. `{ language: 'en', toolbar: [...], ...}`
+      * `options` CKEditor's configuration object, eg. `{ language: 'en', toolbar: [...], ...}`
       * `position` Position side of the toolbar, default: `left`, options: `left|center|right`
 
 

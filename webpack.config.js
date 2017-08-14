@@ -18,9 +18,6 @@ module.exports = {
       libraryTarget: 'umd',
   },
   module: {
-    preLoaders: [
-        { test: /\.json$/, loader: 'json'},
-    ],
     loaders: [
       {
         test: /\.jsx?$/,

@@ -1,8 +1,10 @@
-grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) => {
+import grapesjs from 'grapesjs';
+
+export default grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) => {
   let c = opts;
 
   let defaults = {
-    // CkEditor options
+    // CKEditor options
     options: {},
 
     // On which side of the element to position the toolbar

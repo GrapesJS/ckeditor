@@ -55,10 +55,16 @@ $ git clone https://github.com/artf/grapesjs-plugin-ckeditor.git
 $ cd grapesjs-plugin-ckeditor
 ```
 
-Install it
+Install dependencies
 
 ```sh
 $ npm i
+```
+
+The plugin relies on GrapesJS and CKEditor via `peerDependencies` so you have to install them manually
+
+```sh
+$ npm i grapesjs ckeditor --no-save
 ```
 
 Start the dev server
@@ -66,13 +72,6 @@ Start the dev server
 ```sh
 $ npm start
 ```
-
-Build before the commit. This will also increase the patch level version of the package
-
-```sh
-$ npm run build
-```
-
 
 
 ## License

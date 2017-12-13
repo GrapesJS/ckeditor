@@ -1,5 +1,7 @@
 import grapesjs from 'grapesjs';
 
+const stopPropagation = e => e.stopPropagation();
+
 export default grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) => {
   let c = opts;
 
@@ -18,7 +20,7 @@ export default grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) =
       c[name] = defaults[name];
   }
 
-  if(!CKEDITOR) {
+  if (!CKEDITOR) {
     throw new Error('CKEDITOR instance not found');
   }
 
@@ -69,7 +71,7 @@ export default grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) =
 
       // The toolbar is not immediatly loaded so will be wrong positioned.
       // With this trick we trigger an event which updates the toolbar position
-      rte.on('instanceReady', (e) => {
+      rte.on('instanceReady', e => {
         var toolbar = rteToolbar.querySelector('#cke_' + rte.name);
         if (toolbar) {
           toolbar.style.display = 'block';
@@ -77,7 +79,15 @@ export default grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) =
         editor.trigger('canvasScroll')
       });
 
+      // Prevent blur when some of CKEditor's element is clicked
+      rte.on('dialogShow', e => {
+        const editorEls = grapesjs.$('.cke_dialog_background_cover, .cke_dialog');
+        ['off', 'on'].forEach(m => editorEls[m]('mousedown', stopPropagation));
+      });
+
       this.focus(el, rte);
+
+
       return rte;
     },
 

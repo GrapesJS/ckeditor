@@ -31,7 +31,7 @@
   },
   "peerDependencies": {
     "grapesjs": "0.x",
-    "ckeditor": "4.x",
+    "ckeditor": "4.x"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

@@ -61,6 +61,16 @@ export default grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) =
       // Init CkEditors
       rte = CKEDITOR.inline(el, c.options);
 
+      /**
+       * Implement the `rte.getContent` method so that GrapesJS is able to retrieve CKE's generated content (`rte.getData`) properly
+       *
+       * See:
+       *  - {@link https://github.com/artf/grapesjs/issues/2916}
+       *  - {@link https://github.com/artf/grapesjs/blob/dev/src/dom_components/view/ComponentTextView.js#L80}
+       *  - {@link https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-getData}
+       */
+      rte.getContent = rte.getData;
+
       // Make click event propogate
       rte.on('contentDom', () => {
         var editable = rte.editable();

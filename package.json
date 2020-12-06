@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-plugin-ckeditor",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Replace the built-in RTE with CKEditor",
   "main": "dist/grapesjs-plugin-ckeditor.min.js",
   "scripts": {

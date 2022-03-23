@@ -84,6 +84,9 @@ export default grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) =
       rte.on('instanceReady', e => {
         var toolbar = rteToolbar.querySelector('#cke_' + rte.name);
         if (toolbar) {
+          if(c.hasMinWidth) {
+            toolbar.style.minWidth = c.minWidth||"";
+          }
           toolbar.style.display = 'block';
         }
         editor.trigger('canvasScroll')

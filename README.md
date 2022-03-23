@@ -14,6 +14,8 @@ This plugin replaces the default Rich Text Editor with the one from CKEditor
   * Options:
       * `options` CKEditor's configuration object, eg. `{ language: 'en', toolbar: [...], ...}`
       * `position` Position side of the toolbar, default: `left`, options: `left|center|right`
+      * `hasMinWidth` Allow the user to set a min width to ckeditor, default: `false`
+      * `minWidth` Set the minWidth to ckeditor, eg. `"350px"` 
 
 
 

@@ -86,7 +86,7 @@ export default grapesjs.plugins.add('gjs-plugin-ckeditor', (editor, opts = {}) =
         if (toolbar) {
           toolbar.style.display = 'block';
         }
-        editor.trigger('canvasScroll')
+        editor.Canvas.getWindow().dispatchEvent(new CustomEvent('scroll'))
       });
 
       // Prevent blur when some of CKEditor's element is clicked

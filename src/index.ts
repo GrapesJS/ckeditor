@@ -34,7 +34,7 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
   ck = window.CKEDITOR;
 
   if (!ck) {
-    throw new Error('CKEDITOR instance not found');
+    return editor.log('CKEDITOR instance not found', { level: 'error' });
   }
 
   const stopPropagation = (ev: Event) => ev.stopPropagation();

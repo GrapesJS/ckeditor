@@ -100,9 +100,9 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
       // Seems like 'sharedspace' plugin doesn't work exactly as expected
       // so will help hiding other toolbars already created
       const rteToolbar = editor.RichTextEditor.getToolbarEl();
-      // [].forEach.call(rteToolbar.children, (child) => {
-      //   child.style.display = 'none';
-      // });
+      [].forEach.call(rteToolbar.children, (child: HTMLElement) => {
+        child.style.display = 'none';
+      });
 
       // Check for the mandatory options
       const ckOptions = { ...opts.options };

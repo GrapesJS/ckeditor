@@ -22,8 +22,10 @@
   ],
   "author": "Artur Arseniev",
   "license": "BSD-3-Clause",
+  "dependencies": {
+    "@types/ckeditor4": "^4.20.0"
+  },
   "devDependencies": {
-    "@types/ckeditor4": "^4.20.0",
     "grapesjs": "^0.21.1",
     "grapesjs-cli": "^4.0.1"
   }

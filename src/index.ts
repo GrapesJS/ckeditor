@@ -45,6 +45,8 @@ const forEach = <T extends HTMLElement = HTMLElement>(items: Iterable<T>, clb: (
   [].forEach.call(items, clb);
 }
 
+const stopPropagation = (ev: Event) => ev.stopPropagation();
+
 const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
   const opts: Required<PluginOptions> = {
     options: {},
@@ -76,7 +78,6 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     ck = window.CKEDITOR;
   }
 
-  const stopPropagation = (ev: Event) => ev.stopPropagation();
   const updateEditorToolbars = () => setTimeout(() => editor.refresh(), 0);
   const logCkError = () => {
     editor.log('CKEDITOR instance not found', { level: 'error' })

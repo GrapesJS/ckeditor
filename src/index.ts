@@ -40,17 +40,25 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
   const stopPropagation = (ev: Event) => ev.stopPropagation();
   const updateEditorToolbars = () => setTimeout(() => editor.refresh(), 0);
 
+  const focus = (el: HTMLElement, rte?: CKE.editor) => {
+    // Do nothing if already focused
+    if (rte?.focusManager?.hasFocus) return;
+    el.contentEditable = 'true';
+    rte?.focus();
+    updateEditorToolbars();
+  };
+
 
   editor.setCustomRte({
     // parseContent: true,
-    getContent(el, rte) {
+    getContent(el, rte: CKE.editor) {
       return rte.getData();
     },
 
-    enable(el, rte) {
+    enable(el, rte?: CKE.editor) {
       // If already exists I'll just focus on it
       if(rte && rte.status != 'destroyed') {
-        this.focus(el, rte);
+        focus(el, rte);
         return rte;
       }
 
@@ -84,14 +92,14 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
 
       // Make click event propogate
       rte.on('contentDom', () => {
-        const editable = rte.editable();
+        const editable = rte!.editable();
         editable.attachListener(editable, 'click', () => el.click());
       });
 
       // The toolbar is not immediatly loaded so will be wrong positioned.
       // With this trick we trigger an event which updates the toolbar position
       rte.on('instanceReady', () => {
-        const toolbar = rteToolbar.querySelector<HTMLElement>(`#cke_${rte.name}`);
+        const toolbar = rteToolbar.querySelector<HTMLElement>(`#cke_${rte!.name}`);
         if (toolbar) {
           toolbar.style.display = 'block';
         }
@@ -102,38 +110,30 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
       });
 
       // Prevent blur when some of CKEditor's element is clicked
-      rte.on('dialogShow', e => {
+      rte.on('dialogShow', () => {
         // TODO
         // const editorEls = grapesjs.$('.cke_dialog_background_cover, .cke_dialog');
         // ['off', 'on'].forEach(m => editorEls[m]('mousedown', stopPropagation));
       });
 
       // On ENTER doesn't trigger `input` event
-      rte.on('key', (ev) => {
+      rte.on('key', (ev: any) => {
         ev.data.keyCode === 13 && updateEditorToolbars();
       });
 
-      this.focus(el, rte);
+      focus(el, rte);
 
       return rte;
     },
 
-    disable(el, rte) {
-      el.contentEditable = false;
+    disable(el, rte?: CKE.editor) {
+      el.contentEditable = '';
       rte?.focusManager?.blur(true);
-    },
-
-    focus(el, rte) {
-      // Do nothing if already focused
-      if (rte?.focusManager?.hasFocus) return;
-      el.contentEditable = true;
-      rte?.focus();
-      updateEditorToolbars();
     },
   });
 
   // Update RTE toolbar position
-  editor.on('rteToolbarPosUpdate', (pos) => {
+  editor.on('rteToolbarPosUpdate', (pos: any) => {
     const { elRect } = pos;
 
     switch (opts.position) {

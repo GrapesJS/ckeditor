@@ -30,6 +30,10 @@ const loadFromCDN = (url: string) => {
   return scr;
 }
 
+const forEach = <T extends HTMLElement = HTMLElement>(items: Iterable<T>, clb: (item: T) => void) => {
+  [].forEach.call(items, clb);
+}
+
 const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
   const opts: Required<PluginOptions> = {
     options: {},
@@ -71,7 +75,6 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
   }
 
   const focus = (el: HTMLElement, rte?: CKE.editor) => {
-    // Do nothing if already focused
     if (rte?.focusManager?.hasFocus) return;
     el.contentEditable = 'true';
     rte?.focus();
@@ -100,7 +103,7 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
       // Seems like 'sharedspace' plugin doesn't work exactly as expected
       // so will help hiding other toolbars already created
       const rteToolbar = editor.RichTextEditor.getToolbarEl();
-      [].forEach.call(rteToolbar.children, (child: HTMLElement) => {
+      forEach(rteToolbar.children as Iterable<HTMLElement>, (child) => {
         child.style.display = 'none';
       });
 
@@ -122,7 +125,7 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
         ckOptions.sharedSpaces = { top: rteToolbar };
       }
 
-      // Init CkEditors
+      // Init CKEDITOR
       rte = ck!.inline(el, ckOptions);
 
       // Make click event propogate
@@ -146,12 +149,14 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
 
       // Prevent blur when some of CKEditor's element is clicked
       rte.on('dialogShow', () => {
-        // TODO
-        // const editorEls = grapesjs.$('.cke_dialog_background_cover, .cke_dialog');
-        // ['off', 'on'].forEach(m => editorEls[m]('mousedown', stopPropagation));
+        const els = document.querySelectorAll<HTMLElement>('.cke_dialog_background_cover, .cke_dialog_container');
+        forEach(els, (child) => {
+          child.removeEventListener('mousedown', stopPropagation);
+          child.addEventListener('mousedown', stopPropagation);
+        });
       });
 
-      // On ENTER doesn't trigger `input` event
+      // On ENTER CKEditor doesn't trigger `input` event
       rte.on('key', (ev: any) => {
         ev.data.keyCode === 13 && updateEditorToolbars();
       });

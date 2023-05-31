@@ -1,9 +1,11 @@
-import type { Plugin } from 'grapesjs';
+import type { Plugin, CustomRTE } from 'grapesjs';
 import type CKE from 'ckeditor4';
 
 export type PluginOptions = {
   /**
    * CKEditor's configuration options.
+   * @see https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
+   * @default {}
    */
   options?: CKE.config;
 
@@ -19,6 +21,15 @@ export type PluginOptions = {
    * @default 'left'
    */
   position?: 'left' | 'center' | 'right';
+
+  /**
+   * Extend the default customRTE interface.
+   * @see https://grapesjs.com/docs/guides/Replace-Rich-Text-Editor.html
+   * @default {}
+   * @example
+   * customRte: { parseContent: true, ... },
+   */
+  customRte?: Partial<CustomRTE>;
 };
 
 const isString = (value: any): value is string => typeof value === 'string';
@@ -37,6 +48,7 @@ const forEach = <T extends HTMLElement = HTMLElement>(items: Iterable<T>, clb: (
 const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
   const opts: Required<PluginOptions> = {
     options: {},
+    customRte: {},
     position: 'left',
     ckeditor: 'https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js',
     ...options,
@@ -83,7 +95,6 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
 
 
   editor.setCustomRte({
-    // parseContent: true,
     getContent(el, rte: CKE.editor) {
       return rte.getData();
     },
@@ -170,6 +181,8 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
       el.contentEditable = 'false';
       rte?.focusManager?.blur(true);
     },
+
+    ...opts.customRte,
   });
 
   // Update RTE toolbar position

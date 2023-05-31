@@ -1,26 +1,40 @@
 # GrapesJS CKEditor
 
-This plugin replaces the default Rich Text Editor with the one from CKEditor
+This plugin replaces the default Rich Text Editor with the CKEditor
+
+[Demo](https://grapesjs.com/demo-newsletter-editor.html)
 
 <p align="center"><img src="http://grapesjs.com/img/screen-ckeditor.jpg" alt="GrapesJS" align="center"/></p>
 <br/>
 
-
-
 ## Summary
 
-* Plugin
-  * Name: `gjs-plugin-ckeditor`
-  * Options:
-      * `options` CKEditor's configuration object, eg. `{ language: 'en', toolbar: [...], ...}`
-      * `position` Position side of the toolbar, default: `left`, options: `left|center|right`
+* Plugin name: `grapesjs-plugin-ckeditor`
+
+
+
+
+## Options
+
+|Option|Description|Default|
+|-|-|-
+|`options`|CKEditor's configuration [object](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html), eg. `{ language: 'en', toolbar: [...], ...}`|`{}`|
+|`position`|Position side of the toolbar,  options: `left, center, right`|`left`|
+|`ckeditor`|Pass CKEDITOR constructor or the CDN string from which the CKEDITOR will be loaded.|`https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js`|
+|`customRte`|Extend the default [customRTE interface](https://grapesjs.com/docs/guides/Replace-Rich-Text-Editor.html).|`{}`|
+
 
 
 
 ## Download
 
-* `npm i grapesjs-plugin-ckeditor` or `yarn add grapesjs-plugin-ckeditor`
-* Latest release link https://github.com/artf/grapesjs-plugin-ckeditor/releases/latest
+* CDN
+  * `https://unpkg.com/grapesjs-plugin-ckeditor`
+* NPM
+  * `npm i grapesjs-plugin-ckeditor`
+* GIT
+  * `git clone https://github.com/GrapesJS/ckeditor.git`
+
 
 
 
@@ -36,9 +50,9 @@ This plugin replaces the default Rich Text Editor with the one from CKEditor
 <script type="text/javascript">
   var editor = grapesjs.init({
       container : '#gjs',
-      plugins: ['gjs-plugin-ckeditor'],
+      plugins: ['grapesjs-plugin-ckeditor'],
       pluginsOpts: {
-        'gjs-plugin-ckeditor': {/* ...options */}
+        'grapesjs-plugin-ckeditor': {/* ...options */}
       }
   });
 </script>
@@ -51,8 +65,8 @@ This plugin replaces the default Rich Text Editor with the one from CKEditor
 Clone the repository
 
 ```sh
-$ git clone https://github.com/artf/grapesjs-plugin-ckeditor.git
-$ cd grapesjs-plugin-ckeditor
+$ git clone https://github.com/GrapesJS/ckeditor.git
+$ cd ckeditor
 ```
 
 Install dependencies
@@ -61,17 +75,12 @@ Install dependencies
 $ npm i
 ```
 
-The plugin relies on GrapesJS and CKEditor via `peerDependencies` so you have to install them manually
-
-```sh
-$ npm i grapesjs ckeditor --no-save
-```
-
 Start the dev server
 
 ```sh
 $ npm start
 ```
+
 
 
 ## License

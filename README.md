@@ -22,6 +22,7 @@ This plugin replaces the default Rich Text Editor with the CKEditor
 |`position`|Position side of the toolbar,  options: `left, center, right`|`left`|
 |`ckeditor`|Pass CKEDITOR constructor or the CDN string from which the CKEDITOR will be loaded.|`https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js`|
 |`customRte`|Extend the default [customRTE interface](https://grapesjs.com/docs/guides/Replace-Rich-Text-Editor.html).|`{}`|
+|`onToolbar`|Customize CKEditor toolbar element once created, eg. `onToolbar: (el) => { el.style.minWidth = '350px' }`|``|
 
 
 

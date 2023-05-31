@@ -21,24 +21,54 @@ export type PluginOptions = {
   position?: 'left' | 'center' | 'right';
 };
 
+const isString = (value: any): value is string => typeof value === 'string';
+
+const loadFromCDN = (url: string) => {
+  const scr = document.createElement('script');
+  scr.src = url;
+  document.head.appendChild(scr);
+  return scr;
+}
+
 const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
   const opts: Required<PluginOptions> = {
     options: {},
     position: 'left',
-    ckeditor: '',
+    ckeditor: 'https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js',
     ...options,
   };
 
   let ck: CKE.CKEditorStatic | undefined;
+  const { ckeditor } = opts;
+  const hasWindow = typeof window !== 'undefined';
+  let dynamicLoad = false;
 
-  ck = window.CKEDITOR;
-
-  if (!ck) {
-    return editor.log('CKEDITOR instance not found', { level: 'error' });
+  // Check and load CKEDITOR constructor
+  if (ckeditor) {
+    if (isString(ckeditor)) {
+      if (hasWindow) {
+        dynamicLoad = true;
+        const scriptEl = loadFromCDN(ckeditor);
+        scriptEl.onload = () => {
+          ck = window.CKEDITOR;
+        }
+      }
+    } else if (ckeditor.inline!) {
+      ck = ckeditor;
+    }
+  } else if (hasWindow) {
+    ck = window.CKEDITOR;
   }
 
   const stopPropagation = (ev: Event) => ev.stopPropagation();
   const updateEditorToolbars = () => setTimeout(() => editor.refresh(), 0);
+  const logCkError = () => {
+    editor.log('CKEDITOR instance not found', { level: 'error' })
+  };
+
+  if (!ck && !dynamicLoad) {
+    return logCkError();
+  }
 
   const focus = (el: HTMLElement, rte?: CKE.editor) => {
     // Do nothing if already focused
@@ -60,6 +90,11 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
       if(rte && rte.status != 'destroyed') {
         focus(el, rte);
         return rte;
+      }
+
+      if (!ck) {
+        logCkError();
+        return;
       }
 
       // Seems like 'sharedspace' plugin doesn't work exactly as expected
@@ -127,7 +162,7 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     },
 
     disable(el, rte?: CKE.editor) {
-      el.contentEditable = '';
+      el.contentEditable = 'false';
       rte?.focusManager?.blur(true);
     },
   });

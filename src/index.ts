@@ -30,6 +30,15 @@ export type PluginOptions = {
    * customRte: { parseContent: true, ... },
    */
   customRte?: Partial<CustomRTE>;
+
+  /**
+   * Customize CKEditor toolbar element once created.
+   * @example
+   * onToolbar: (el) => {
+   *  el.style.minWidth = '350px';
+   * }
+   */
+  onToolbar?: (toolbar: HTMLElement) => void;
 };
 
 const isString = (value: any): value is string => typeof value === 'string';
@@ -53,6 +62,7 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
     customRte: {},
     position: 'left',
     ckeditor: 'https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js',
+    onToolbar: () => {},
     ...options,
   };
 
@@ -152,6 +162,7 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
         const toolbar = rteToolbar.querySelector<HTMLElement>(`#cke_${rte!.name}`);
         if (toolbar) {
           toolbar.style.display = 'block';
+          opts.onToolbar(toolbar);
         }
         // Update toolbar position
         editor.refresh();

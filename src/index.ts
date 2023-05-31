@@ -134,7 +134,6 @@ const plugin: Plugin<PluginOptions> = (editor, options = {}) => {
 
   // Update RTE toolbar position
   editor.on('rteToolbarPosUpdate', (pos) => {
-    // console.log('rteToolbarPosUpdate', pos)
     const { elRect } = pos;
 
     switch (opts.position) {
